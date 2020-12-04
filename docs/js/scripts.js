@@ -1,42 +1,26 @@
-/* http://stackoverflow.com/a/5077091 */
-String.prototype.format = function () {
-  var args = arguments;
-  return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
-};
+document.querySelectorAll('button.group').forEach(buttonGroup => addEventListener('click', function () {
+	if (this.classList.has('selected'))
+		this.classList.remove('selected')
+	else {
+		Array.from(this.parentNode.children).filter(x => x !== this).forEach(sib => sib.classList.remove('selected'));
+		this.classList.add('selected')
+	}
 
-$('button.group').on('click', function() {
-  if ($(this).hasClass('selected')){
-    $(this).removeClass('selected');
-  } else {
-    $(this).siblings().removeClass('selected');
-    $(this).addClass('selected');
-  }
+	if (Array.from(document.getElementsByClassName('region').children).some(elem => elem.classList.has('selected'))
+	 && Array.from(document.getElementsByClassName('console').children).some(elem => elem.classList.has('selected'))
+	 && Array.from(document.getElementsByClassName('firmware').children).some(elem => elem.classList.has('selected')))
+		document.getElementById("download").classList.add("active")
+	else
+		document.getElementById("download").classList.remove("active")
+}))
 
-  if (   $('.region').children().hasClass('selected')
-      && $('.console').children().hasClass('selected')
-      && $('.firmware').children().hasClass('selected') 
-	) {
-    $('#download').addClass('active');
-  } else {
-    $('#download').removeClass('active');
-  }
-  //if (region_selected('div.region'))
-  //$('download')
-});
+document.querySelector('download').addEventListener('click', function () {
+	if (!this.classList.has('active'))
+		return;
 
-$('#download').on('click', function() {
-  if (!$(this).hasClass('active')) {
-    return;
-  }
+	const region = document.getElementsByClassName('region')[0].getElementsByClassName('selected')[0].getAttribute('id');
+	const system = document.getElementsByClassName('console')[0].getElementsByClassName('selected')[0].getAttribute('id');
+	const firmver = document.getElementsByClassName('firmware')[0].getElementsByClassName('selected')[0].getAttribute('id');
 
-  var region = $('.region').children('.selected').attr('id');
-  var console_ = $('.console').children('.selected').attr('id');
-  var firmware_ = $('.firmware').children('.selected').attr('id');
-
-  var base = "https://github.com/nedwill/soundhax/raw/master/";
-  if(console_ == 'n3ds')
-     var filename = "soundhax-{0}-{1}.m4a".format(region, console_);
-  else
-	 var filename = "soundhax-{0}-{1}-{2}.m4a".format(region, console_, firmware_);
-  window.location.href = base + filename;
-});
+ 	window.location.href = "https://github.com/nedwill/soundhax/raw/master/" + `soundhax-${region}-${system + (system == 'n3ds' ? '-' + firmver : '')}.m4a`;
+})
