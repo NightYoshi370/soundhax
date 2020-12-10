@@ -1,26 +1,28 @@
-document.querySelectorAll('button.group').forEach(buttonGroup => addEventListener('click', function () {
-	if (this.classList.has('selected'))
-		this.classList.remove('selected')
+const downloadButton = document.getElementById("download");
+
+document.querySelectorAll('button.group').forEach(buttonGroup => buttonGroup.addEventListener('click', function () {
+	if (buttonGroup.classList.contains('selected'))
+		buttonGroup.classList.remove('selected')
 	else {
-		Array.from(this.parentNode.children).filter(x => x !== this).forEach(sib => sib.classList.remove('selected'));
-		this.classList.add('selected')
+		Array.from(buttonGroup.parentNode.children).filter(x => x !== buttonGroup).forEach(sib => sib.classList.remove('selected'));
+		buttonGroup.classList.add('selected')
 	}
 
-	if (Array.from(document.getElementsByClassName('region').children).some(elem => elem.classList.has('selected'))
-	 && Array.from(document.getElementsByClassName('console').children).some(elem => elem.classList.has('selected'))
-	 && Array.from(document.getElementsByClassName('firmware').children).some(elem => elem.classList.has('selected')))
-		document.getElementById("download").classList.add("active")
+	if (Array.from(document.getElementById('region').children).some(elem => elem.classList.contains('selected'))
+	 && Array.from(document.getElementById('console').children).some(elem => elem.classList.contains('selected'))
+	 && Array.from(document.getElementById('firmware').children).some(elem => elem.classList.contains('selected')))
+		downloadButton.classList.add("active")
 	else
-		document.getElementById("download").classList.remove("active")
+		downloadButton.classList.remove("active")
 }))
 
-document.querySelector('download').addEventListener('click', function () {
-	if (!this.classList.has('active'))
+downloadButton.addEventListener('click', function () {
+	if (!downloadButton.classList.contains('active'))
 		return;
 
-	const region = document.getElementsByClassName('region')[0].getElementsByClassName('selected')[0].getAttribute('id');
-	const system = document.getElementsByClassName('console')[0].getElementsByClassName('selected')[0].getAttribute('id');
-	const firmver = document.getElementsByClassName('firmware')[0].getElementsByClassName('selected')[0].getAttribute('id');
+	const region = document.getElementById('region').getElementsByClassName('selected')[0].getAttribute('id');
+	const system = document.getElementById('console').getElementsByClassName('selected')[0].getAttribute('id');
+	const firmver = document.getElementById('firmware').getElementsByClassName('selected')[0].getAttribute('id');
 
- 	window.location.href = "https://github.com/nedwill/soundhax/raw/master/" + `soundhax-${region}-${system + (system == 'n3ds' ? '-' + firmver : '')}.m4a`;
+	window.location.href = "https://github.com/nedwill/soundhax/raw/master/" + `soundhax-${region}-${system + (system !== 'n3ds' ? '-' + firmver : '')}.m4a`;
 })
