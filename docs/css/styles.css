@@ -63,23 +63,11 @@ button {
   padding-left: 30px;
   cursor: pointer;
 }
-.btn-group.region {
+
+.btn-group {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  margin-top: 2%;
-}
-
-.btn-group.console {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.btn-group.firmware {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center; 
 }
 
 button.group{
